@@ -24,3 +24,9 @@
 #   # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy-Report-Only
 #   # config.content_security_policy_report_only = true
 # end
+
+Rails.application.configure do
+  config.action_dispatch.default_headers = {
+    'X-Frame-Options' => 'ALLOWALL',
+  }
+end
