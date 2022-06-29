@@ -65,7 +65,7 @@
     <% end %>
 
     <%= Article.first.content %>
-    <%=link_to "Articles", articles_path %>
+    <%= link_to "Articles", articles_path(params: {host: params[:host]}) %>
 
     <div style="margin-bottom: 50px"></div>
   </body>
