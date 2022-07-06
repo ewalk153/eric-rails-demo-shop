@@ -58,8 +58,13 @@ document.addEventListener("turbo:load", function (event) {
 
 document.addEventListener("turbo:before-fetch-request", function (event) {
     event.preventDefault();
-    event.detail.fetchOptions.headers["Authorization"] =  "Bearer " + window.sessionToken;
-    event.detail.resume();
+    async function foo() {
+      // event.detail.fetchOptions.headers["Authorization"] =  "Bearer " + window.sessionToken;
+      const sessionToken = await getSessionToken(app);
+      event.detail.fetchOptions.headers["Authorization"] =  "Bearer " + sessionToken;
+      event.detail.resume();
+    }
+    foo()
 });
 
 // document.addEventListener("turbo:render", function () {
