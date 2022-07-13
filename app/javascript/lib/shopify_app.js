@@ -38,7 +38,7 @@ function redirectThroughTurbolinks(isInitialRedirect = false) {
       shouldRedirect = validLoadPath && data.loadPath !== "/";
       break;
   }
-  if (shouldRedirect) Turbolinks.visit(data.loadPath);
+  if (shouldRedirect) Turbo.visit(data.loadPath);
 }
 
 // Wait for a session token before trying to load an authenticated page
