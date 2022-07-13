@@ -47,9 +47,6 @@ await retrieveToken(app);
 // Keep retrieving a session token periodically
 keepRetrievingToken(app);
 
-// Redirect to the requested page when DOM loads
-var isInitialRedirect = true;
-redirectThroughTurbolinks(isInitialRedirect);
 
 document.addEventListener("turbo:load", function (event) {
   redirectThroughTurbolinks();
@@ -73,3 +70,8 @@ document.addEventListener("turbo:before-fetch-request", function (event) {
 //     xhr.setRequestHeader("Authorization", "Bearer " + window.sessionToken);
 //   });
 // });
+
+
+// Redirect to the requested page when DOM loads
+var isInitialRedirect = true;
+redirectThroughTurbolinks(isInitialRedirect);
