@@ -50,6 +50,12 @@ keepRetrievingToken(app);
 
 document.addEventListener("turbo:load", function (event) {
   redirectThroughTurbolinks();
+  const app = window.app;
+  app.getState('context').then(function(context) {
+    if(context !== AppBridge.Context.Modal) {
+      AppBridge.actions.History.create(app).dispatch(AppBridge.actions.History.Action.REPLACE, window.location.pathname);
+    }
+  });
 });
 
 
