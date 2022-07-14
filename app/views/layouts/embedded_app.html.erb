@@ -31,8 +31,9 @@
 
     <%= content_tag(:div, nil, id: 'shopify-app-init', data: {
       api_key: ShopifyApp.configuration.api_key,
-      shop_origin: @shop_origin || (@current_shopify_session.shop if @current_shopify_session),
+      shop_origin: @shop_origin,
       host: @host,
+      load_path: params[:return_to] || home_path,
       debug: Rails.env.development?
     } ) %>
 

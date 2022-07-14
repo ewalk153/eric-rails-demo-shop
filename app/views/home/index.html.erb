@@ -8,7 +8,7 @@
       href="https://unpkg.com/@shopify/polaris@4.25.0/styles.min.css"
       />
     <script>
-      document.addEventListener("DOMContentLoaded", async function() {
+      document.addEventListener("turbo:load", async function() {
         
         console.log("DOMContentLoaded!")
         
@@ -65,7 +65,7 @@
     <% end %>
 
     <%= Article.first.content %>
-    <%= link_to "Articles", articles_path(params: {host: params[:host]}) %>
+    <%= link_to "Articles", articles_path %>
 
     <div style="margin-bottom: 50px"></div>
   </body>

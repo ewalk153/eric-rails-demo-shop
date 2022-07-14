@@ -35,7 +35,7 @@ function redirectThroughTurbolinks(isInitialRedirect = false) {
       shouldRedirect = validLoadPath;
       break;
     case false:
-      shouldRedirect = validLoadPath && data.loadPath !== "/";
+      shouldRedirect = validLoadPath && data.loadPath !== "/home";
       break;
   }
   if (shouldRedirect) Turbo.visit(data.loadPath);
@@ -59,6 +59,8 @@ document.addEventListener("turbo:before-fetch-request", function (event) {
       // event.detail.fetchOptions.headers["Authorization"] =  "Bearer " + window.sessionToken;
       const sessionToken = await getSessionToken(app);
       event.detail.fetchOptions.headers["Authorization"] =  "Bearer " + sessionToken;
+      event.detail.url.searchParams.set("shop", data.shopOrigin);
+      event.detail.url.searchParams.set("host", data.host);
       event.detail.resume();
     }
     foo()
