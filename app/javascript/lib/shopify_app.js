@@ -60,16 +60,18 @@ document.addEventListener("turbo:load", function (event) {
 
 
 document.addEventListener("turbo:before-fetch-request", function (event) {
-    event.preventDefault();
-    async function foo() {
-      // event.detail.fetchOptions.headers["Authorization"] =  "Bearer " + window.sessionToken;
-      const sessionToken = await getSessionToken(app);
-      event.detail.fetchOptions.headers["Authorization"] =  "Bearer " + sessionToken;
-      event.detail.url.searchParams.set("shop", data.shopOrigin);
-      event.detail.url.searchParams.set("host", data.host);
-      event.detail.resume();
-    }
-    foo()
+    event.detail.fetchOptions.headers["Authorization"] =  "Bearer " + window.sessionToken;
+    event.detail.url.searchParams.set("shop", data.shopOrigin);
+    event.detail.url.searchParams.set("host", data.host);
+    // event.preventDefault();
+    // async function foo() {
+    //   const sessionToken = await getSessionToken(app);
+    //   event.detail.fetchOptions.headers["Authorization"] =  "Bearer " + sessionToken;
+    //   event.detail.url.searchParams.set("shop", data.shopOrigin);
+    //   event.detail.url.searchParams.set("host", data.host);
+    //   event.detail.resume();
+    // }
+    // foo()
 });
 
 // document.addEventListener("turbo:render", function () {
