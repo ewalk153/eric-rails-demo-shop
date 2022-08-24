@@ -12,18 +12,7 @@ TitleBar.create(app, {
   title: data.page,
 });
 
-const SESSION_TOKEN_REFRESH_INTERVAL = 2000; // Request a new token every 2s
-
 const getSessionToken = window['app-bridge-utils'].getSessionToken
-
-async function retrieveToken(app) {
-  window.sessionToken = await getSessionToken(app);
-}
-function keepRetrievingToken(app) {
-  setInterval(() => {
-    retrieveToken(app);
-  }, SESSION_TOKEN_REFRESH_INTERVAL);
-}
 
 function redirectThroughTurbolinks(isInitialRedirect = false) {
   var data = document.getElementById("shopify-app-init").dataset;
@@ -41,12 +30,6 @@ function redirectThroughTurbolinks(isInitialRedirect = false) {
   if (shouldRedirect) Turbo.visit(data.loadPath);
 }
 
-// Wait for a session token before trying to load an authenticated page
-await retrieveToken(app);
-
-// Keep retrieving a session token periodically
-keepRetrievingToken(app);
-
 
 document.addEventListener("turbo:load", function (event) {
   redirectThroughTurbolinks();
@@ -59,19 +42,13 @@ document.addEventListener("turbo:load", function (event) {
 });
 
 
-document.addEventListener("turbo:before-fetch-request", function (event) {
-    event.detail.fetchOptions.headers["Authorization"] =  "Bearer " + window.sessionToken;
-    event.detail.url.searchParams.set("shop", data.shopOrigin);
-    event.detail.url.searchParams.set("host", data.host);
-    // event.preventDefault();
-    // async function foo() {
-    //   const sessionToken = await getSessionToken(app);
-    //   event.detail.fetchOptions.headers["Authorization"] =  "Bearer " + sessionToken;
-    //   event.detail.url.searchParams.set("shop", data.shopOrigin);
-    //   event.detail.url.searchParams.set("host", data.host);
-    //   event.detail.resume();
-    // }
-    // foo()
+document.addEventListener("turbo:before-fetch-request", async (event) => {
+  event.preventDefault();
+  const token = await getSessionToken(app);
+  event.detail.fetchOptions.headers["Authorization"] =  `Bearer ${token}`;
+  event.detail.url.searchParams.set("shop", data.shopOrigin);
+  event.detail.url.searchParams.set("host", data.host);
+  event.detail.resume();
 });
 
 // document.addEventListener("turbo:render", function () {
