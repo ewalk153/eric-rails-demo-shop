@@ -33,7 +33,8 @@
       api_key: ShopifyApp.configuration.api_key,
       shop_origin: @shop_origin,
       host: @host,
-      load_path: params[:return_to] || home_path,
+      home_path: home_path,
+      return_to: params[:return_to],
       debug: Rails.env.development?
     } ) %>
 

@@ -14,25 +14,15 @@ TitleBar.create(app, {
 
 const getSessionToken = window['app-bridge-utils'].getSessionToken
 
-function redirectThroughTurbolinks(isInitialRedirect = false) {
-  var data = document.getElementById("shopify-app-init").dataset;
-  var validLoadPath = data && data.loadPath;
-  var shouldRedirect = false;
 
-  switch (isInitialRedirect) {
-    case true:
-      shouldRedirect = validLoadPath;
-      break;
-    case false:
-      shouldRedirect = validLoadPath && data.loadPath !== "/home";
-      break;
-  }
-  if (shouldRedirect) Turbo.visit(data.loadPath);
+function doInitialRedirect() {
+  var data = document.getElementById("shopify-app-init").dataset;
+  var loadPath = data && data.returnTo || data.homePath;
+  if (loadPath) Turbo.visit(loadPath);
 }
 
 
 document.addEventListener("turbo:load", function (event) {
-  redirectThroughTurbolinks();
   const app = window.app;
   app.getState('context').then(function(context) {
     if(context !== AppBridge.Context.Modal) {
@@ -60,5 +50,4 @@ document.addEventListener("turbo:before-fetch-request", async (event) => {
 
 
 // Redirect to the requested page when DOM loads
-var isInitialRedirect = true;
-redirectThroughTurbolinks(isInitialRedirect);
+doInitialRedirect();
