@@ -51,3 +51,18 @@ document.addEventListener("turbo:before-fetch-request", async (event) => {
 
 // Redirect to the requested page when DOM loads
 doInitialRedirect();
+
+(function(xhr) {
+  async function addSessionToken(xhrInstance) { // Example
+    var sessionToken = await getSessionToken(app)
+    xhrInstance.setRequestHeader("Authorization", `Bearer ${sessionToken}`)
+    console.log('we should add session token here', xhrInstance, sessionToken);
+  }
+  // Capture request before any network activity occurs:
+  var send = xhr.send;
+  // TODO: STOP MAKING THIS ASYNC OR GET SOME CONFIDENCE THAT THIS ISN'T BREAKING SHIT
+  xhr.send = async function(data) {
+    await addSessionToken(this)
+    return send.apply(this, arguments);
+  };
+})(XMLHttpRequest.prototype);
